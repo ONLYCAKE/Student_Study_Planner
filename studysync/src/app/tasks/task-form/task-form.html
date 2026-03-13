@@ -1,0 +1,59 @@
+<div class="task-form-container">
+  <button class="primary-btn" (click)="showModal = true">
+    <span class="material-icons-round">add_task</span>
+    Create Task
+  </button>
+
+  <!-- Modal -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="showModal = false">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Create New Task</h2>
+        <button class="icon-btn" (click)="showModal = false">
+          <span class="material-icons-round">close</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Task Title</label>
+          <input type="text" [(ngModel)]="newTask.title" placeholder="e.g. Complete Chapter 5 exercises" required>
+        </div>
+        
+        <div class="form-group">
+          <label>Description</label>
+          <textarea [(ngModel)]="newTask.description" placeholder="Additional details about the task..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label>Subject</label>
+          <select [(ngModel)]="newTask.subjectId" required>
+            <option value="">Select a subject</option>
+            <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.name }}</option>
+          </select>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>Due Date</label>
+            <input type="date" [(ngModel)]="newTask.dueDate">
+          </div>
+          
+          <div class="form-group">
+            <label>Priority</label>
+            <select [(ngModel)]="newTask.priority">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="secondary-btn" (click)="showModal = false">Cancel</button>
+        <button class="primary-btn" (click)="createTask()">Create Task</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int             @id @default(autoincrement())
+  name          String
+  email         String          @unique
+  password      String
+  createdAt     DateTime        @default(now())
+  subjects      Subject[]
+  sessions      StudySession[]
+  tasks         Task[]
+  notifications      Notification[]
+  googleAccessToken  String?
+  googleRefreshToken String?
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  message   String
+  type      String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Subject {
+  id                Int             @id @default(autoincrement())
+  userId            Int
+  user              User            @relation(fields: [userId], references: [id])
+  name              String
+  targetStudyHours  Int
+  examDate          DateTime?
+  createdAt         DateTime        @default(now())
+  sessions          StudySession[]
+  tasks             Task[]
+}
+
+model StudySession {
+  id            Int             @id @default(autoincrement())
+  userId        Int
+  user          User            @relation(fields: [userId], references: [id])
+  subjectId     Int
+  subject       Subject         @relation(fields: [subjectId], references: [id])
+  date          DateTime
+  startTime     String
+  endTime       String
+  status         String          @default("scheduled") // scheduled, active, completed, cancelled
+  googleEventId  String?
+  syncWithGoogle Boolean         @default(false)
+}
+
+model Task {
+  id            Int             @id @default(autoincrement())
+  userId        Int
+  user          User            @relation(fields: [userId], references: [id])
+  subjectId     Int
+  subject       Subject         @relation(fields: [subjectId], references: [id])
+  title         String
+  priority      String          @default("medium") // low, medium, high
+  status        String          @default("pending") // pending, completed
+  dueDate       DateTime?
+  createdAt     DateTime        @default(now())
+}

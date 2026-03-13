@@ -1,0 +1,27 @@
+# Environment files
+.env
+.env.*
+
+# Package files (as requested)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Markdown files
+*.md
+
+# Build and dependencies
+node_modules/
+dist/
+build/
+.angular/
+.prisma/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
